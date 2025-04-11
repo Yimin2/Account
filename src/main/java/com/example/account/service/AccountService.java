@@ -1,6 +1,7 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
+import com.example.account.domain.AccountDto;
 import com.example.account.domain.AccountUser;
 import com.example.account.exception.AccountException;
 import com.example.account.type.AccountStatus;
@@ -20,25 +21,23 @@ public class AccountService {
     private final AccountUserRepository accountUserRepository;
 
     @Transactional
-    public Account createAccount(Long userId, Long initialBalance) {
-        AccountUser accountUser  = accountUserRepository.findById(userId)
+    public AccountDto createAccount(Long userId, Long initialBalance) {
+        AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND));
 
         String newAccountNumber = accountRepository.findFirstByOrderByIdDesc()
                 .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
                 .orElse("1000000000");
 
-        Account saveAccount = accountRepository.save(
-                Account.builder()
+        return AccountDto.fromEntitiy(
+                accountRepository.save(Account.builder()
                         .accountUser(accountUser)
                         .accountStatus(AccountStatus.IN_USE)
                         .accountNumber(newAccountNumber)
                         .balance(initialBalance)
                         .registeredAt(LocalDateTime.now())
-                        .build()
-                        );
-
-                return saveAccount;
+                        .build())
+        );
     }
 
     @Transactional
