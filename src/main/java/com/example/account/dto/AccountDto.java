@@ -15,7 +15,7 @@ public class AccountDto {
     private Long balance;
 
     private LocalDateTime registeredAt;
-    private LocalDateTime unregisteredAt;
+    private LocalDateTime unRegisteredAt;
 
     public static AccountDto fromEntitiy(Account account) {
         return AccountDto.builder()
@@ -23,7 +23,7 @@ public class AccountDto {
                 .accountNumber(account.getAccountNumber())
                 .balance(account.getBalance())
                 .registeredAt(account.getRegisteredAt())
-                .unregisteredAt(account.getUnregisteredAt())
+                .unRegisteredAt(account.getUnRegisteredAt())
                 .build();
     }
 }

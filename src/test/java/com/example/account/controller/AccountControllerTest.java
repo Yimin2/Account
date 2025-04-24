@@ -47,7 +47,7 @@ class AccountControllerTest {
                         .userId(1L)
                         .accountNumber("1234567890")
                         .registeredAt(LocalDateTime.now())
-                        .unregisteredAt(LocalDateTime.now())
+                        .unRegisteredAt(LocalDateTime.now())
                         .build());
         //when
         //then
