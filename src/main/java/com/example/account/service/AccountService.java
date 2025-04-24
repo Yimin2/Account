@@ -24,7 +24,11 @@ public class AccountService {
     public AccountDto createAccount(Long userId, Long initialBalance) {
         AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND));
-
+        
+        if (accountRepository.countByAccountUser(accountUser) >= 10) {
+            throw new AccountException(ErrorCode.MAX_ACCOUNT_PER_USER_10);
+        }
+            
         String newAccountNumber = accountRepository.findFirstByOrderByIdDesc()
                 .map(account -> (Integer.parseInt(account.getAccountNumber())) + 1 + "")
                 .orElse("1000000000");
